@@ -67,18 +67,18 @@ locar.on("gpsupdate", (pos, distMoved) => {
 				pos.coords.latitude + boxProp.latDis
 			);
 
-			const manualGeom = new THREE.BoxGeometry(20, 20, 20);
-			const manualMat = new THREE.MeshBasicMaterial({ color: 0xff00ff });
-			const manualCube = new THREE.Mesh(manualGeom, manualMat);
-
-			// Adiciona o cubo manualmente na cena, sem usar o LocAR
-			manualCube.position.set(0, 0, -50); // 50 unidades na frente da câmera
-			scene.add(manualCube);
 		}
-
+        
 		firstLocation = false;
 	}
 });
+const manualGeom = new THREE.BoxGeometry(20, 20, 20);
+const manualMat = new THREE.MeshBasicMaterial({ color: 0xff00ff });
+const manualCube = new THREE.Mesh(manualGeom, manualMat);
+
+// Adiciona o cubo manualmente na cena, sem usar o LocAR
+manualCube.position.set(0, 0, -50); // 50 unidades na frente da câmera
+scene.add(manualCube);
 
 locar.startGps();
 
