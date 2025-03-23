@@ -53,7 +53,7 @@ locar.on("gpsupdate", (pos, distMoved) => {
 			},
 		];
 
-		const geom = new THREE.OctahedronGeometry(20, 20, 20);
+		const geom = new THREE.OctahedronGeometry(1, 0);
 
 		for (const boxProp of boxProps) {
 			const mesh = new THREE.Mesh(
