@@ -1,35 +1,84 @@
-import * as THREE from 'three';
-import { ARView } from 'locar';
+import * as THREE from "three";
+import * as LocAR from "locar";
 
-const initAR = async () => {
-  const view = new ARView();
-  await view.start();
+const camera = new THREE.PerspectiveCamera(
+	80,
+	window.innerWidth / window.innerHeight,
+	0.001,
+	1000
+);
 
-  const scene = view.scene;
-  const camera = view.camera;
-  const renderer = view.renderer;
+const renderer = new THREE.WebGLRenderer();
+renderer.setSize(window.innerWidth, window.innerHeight);
+document.body.appendChild(renderer.domElement);
 
-  // Cria o cubo
-  const geometry = new THREE.BoxGeometry(1, 1, 1);
-  const material = new THREE.MeshBasicMaterial({ color: 0xff9900 });
-  const cube = new THREE.Mesh(geometry, material);
+const scene = new THREE.Scene();
 
-  // Posiciona o cubo
-  cube.position.set(0, 0, -10); // 10 metros à frente
-  scene.add(cube);
+const locar = new LocAR.LocationBased(scene, camera);
 
-  // Loop de renderização com cálculo de distância
-  const animate = () => {
-    requestAnimationFrame(animate);
+window.addEventListener("resize", (e) => {
+	renderer.setSize(window.innerWidth, window.innerHeight);
+	camera.aspect = window.innerWidth / window.innerHeight;
+	camera.updateProjectionMatrix();
+});
 
-    const distance = camera.position.distanceTo(cube.position);
-    const scale = Math.max(0.5, 5 / distance);
-    cube.scale.set(scale, scale, scale);
+const cam = new LocAR.WebcamRenderer(renderer);
 
-    renderer.render(scene, camera);
-  };
+let firstLocation = true;
 
-  animate();
-};
+const deviceOrientationControls = new LocAR.DeviceOrientationControls(camera);
 
-initAR();
+locar.on("gpsupdate", (pos, distMoved) => {
+	if (firstLocation) {
+		const boxProps = [
+			{
+				latDis: 0.001,
+				lonDis: 0,
+				colour: 0xff0000,
+			},
+			{
+				latDis: -0.001,
+				lonDis: 0,
+				colour: 0xffff00,
+			},
+			{
+				latDis: 0,
+				lonDis: -0.001,
+				colour: 0x00ffff,
+			},
+			{
+				latDis: 0,
+				lonDis: 0.001,
+				colour: 0x00ff00,
+			},
+		];
+
+		const geom = new THREE.OctahedronGeometry(10, 0);
+
+		for (const boxProp of boxProps) {
+			const mesh = new THREE.Mesh(
+				geom,
+				new THREE.MeshBasicMaterial({ color: boxProp.colour })
+			);
+
+			locar.add(
+				mesh,
+				pos.coords.longitude + boxProp.lonDis,
+				pos.coords.latitude + boxProp.latDis
+			);
+
+		}
+        
+		firstLocation = false;
+	}
+});
+
+locar.startGps();
+
+renderer.setAnimationLoop(animate);
+
+function animate() {
+	cam.update();
+	deviceOrientationControls.update();
+	renderer.render(scene, camera);
+}
