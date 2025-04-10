@@ -53,7 +53,7 @@ locar.on("gpsupdate", (pos, distMoved) => {
 		// 	},
 		// ];
 
-		const geom = new THREE.BoxGeometry(10, 10, 10);
+		const geom = new THREE.BoxGeometry(20, 20, 20);
 
 		// for (const boxProp of boxProps) {
 		// 	const mesh = new THREE.Mesh(
@@ -71,7 +71,7 @@ locar.on("gpsupdate", (pos, distMoved) => {
 
 		const mesh = new THREE.Mesh(
 			geom,
-			new THREE.MeshPhongMaterial({ color: 0x0000ff, flatShading: true })
+			new THREE.MeshPhongMaterial({ color: 0xfff, flatShading: true })
 		);
 
 		locar.add(
