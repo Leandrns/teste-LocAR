@@ -71,7 +71,7 @@ locar.on("gpsupdate", (pos, distMoved) => {
 
 		const mesh = new THREE.Mesh(
 			geom,
-			new THREE.MeshPhongMaterial({ color: 0xfff, flatShading: true })
+			new THREE.MeshPhongMaterial({ color: 0xffffff })
 		);
 
 		locar.add(
