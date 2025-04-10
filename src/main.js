@@ -71,7 +71,7 @@ locar.on("gpsupdate", (pos, distMoved) => {
 
 		}
         
-		firstLocation = false;
+		// firstLocation = false;
 	}
 });
 
