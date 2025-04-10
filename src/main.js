@@ -30,48 +30,57 @@ const deviceOrientationControls = new LocAR.DeviceOrientationControls(camera);
 
 locar.on("gpsupdate", (pos, distMoved) => {
 	if (firstLocation) {
-		const boxProps = [
-			{
-				latDis: 0.0009,
-				lonDis: 0,
-				colour: 0xff0000,
-			},
-			{
-				latDis: -0.0009,
-				lonDis: 0,
-				colour: 0xffff00,
-			},
-			{
-				latDis: 0,
-				lonDis: -0.0009,
-				colour: 0x00ffff,
-			},
-			{
-				latDis: 0,
-				lonDis: 0.0009,
-				colour: 0x00ff00,
-			},
-		];
+		// const boxProps = [
+		// 	{
+		// 		latDis: 0.0009,
+		// 		lonDis: 0,
+		// 		colour: 0xff0000,
+		// 	},
+		// 	{
+		// 		latDis: -0.0009,
+		// 		lonDis: 0,
+		// 		colour: 0xffff00,
+		// 	},
+		// 	{
+		// 		latDis: 0,
+		// 		lonDis: -0.0009,
+		// 		colour: 0x00ffff,
+		// 	},
+		// 	{
+		// 		latDis: 0,
+		// 		lonDis: 0.0009,
+		// 		colour: 0x00ff00,
+		// 	},
+		// ];
 
-		document.getElementById("distancia-movida").innerText = `Distancia movida: ${distMoved} metros`;
+		const geom = new THREE.BoxGeometry(10, 10, 10);
 
-		const geom = new THREE.OctahedronGeometry(10, 0);
+		// for (const boxProp of boxProps) {
+		// 	const mesh = new THREE.Mesh(
+		// 		geom,
+		// 		new THREE.MeshBasicMaterial({ color: boxProp.colour })
+		// 	);
 
-		for (const boxProp of boxProps) {
-			const mesh = new THREE.Mesh(
-				geom,
-				new THREE.MeshBasicMaterial({ color: boxProp.colour })
-			);
+		// 	locar.add(
+		// 		mesh,
+		// 		pos.coords.longitude + boxProp.lonDis,
+		// 		pos.coords.latitude + boxProp.latDis
+		// 	);
 
-			locar.add(
-				mesh,
-				pos.coords.longitude + boxProp.lonDis,
-				pos.coords.latitude + boxProp.latDis
-			);
+		// }
 
-		}
+		const mesh = new THREE.Mesh(
+			geom,
+			new THREE.MeshPhongMaterial({ color: 0x0000ff, flatShading: true })
+		);
+
+		locar.add(
+			mesh,
+			pos.coords.longitude + 0.0009,
+			pos.coords.latitude + 0.0009
+		);
         
-		// firstLocation = false;
+		firstLocation = false;
 	}
 });
 
