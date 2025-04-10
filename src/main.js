@@ -53,6 +53,8 @@ locar.on("gpsupdate", (pos, distMoved) => {
 			},
 		];
 
+		document.getElementById("distancia-movida").innerText(distMoved);
+
 		const geom = new THREE.OctahedronGeometry(10, 0);
 
 		for (const boxProp of boxProps) {
