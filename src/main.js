@@ -20,6 +20,7 @@ document.body.appendChild(renderer.domElement);
 // Criando uma cena
 const scene = new THREE.Scene();
 
+// Adicionando uma luz ambiente e uma luz direcional à cena
 const ambientLight = new THREE.AmbientLight(0xffffff, 1); // luz branca e suave
 scene.add(ambientLight);
 
