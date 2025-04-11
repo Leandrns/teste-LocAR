@@ -72,7 +72,7 @@ locar.on("gpsupdate", (pos, distMoved) => {
 					locar.add(
 						child,
 						pos.coords.longitude + 0.0009, // pega a longitude do GPS e adiciona 0.0009
-						pos.coords.latitude + 0.0009 // pega a latitude do GPS e adiciona 0.0009
+						pos.coords.latitude // pega a latitude do GPS e adiciona 0.0009
 					);
 				}
 			});
