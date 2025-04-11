@@ -1,5 +1,6 @@
 import * as THREE from "three";
 import * as LocAR from "locar";
+import { GLTFLoader } from "three/examples/jsm/Addons.js";
 
 // Configurando a câmera
 const camera = new THREE.PerspectiveCamera(
@@ -37,6 +38,8 @@ let firstLocation = true;
 // Criação de um objeto para controlar a orientação do dispositivo, recebendo a câmera como parâmetro
 const deviceOrientationControls = new LocAR.DeviceOrientationControls(camera);
 
+const loader = new GLTFLoader();
+
 // Adicionando um evento manipulador, que nesse ocorre quando o GPS do dispositivo é atualizado
 locar.on("gpsupdate", (pos, distMoved) => {
 	if (firstLocation) {
@@ -51,12 +54,29 @@ locar.on("gpsupdate", (pos, distMoved) => {
 			// Mais detalhes sobre os materiais podem ser vistos em https://threejs.org/manual/#en/materials
 		);
 
+
+		loader.load("./models/Flamingo.glb", (gltf) => {
+			const modelGroup = gltf.scene;
+
+			modelGroup.traverse((child) => {
+				if (child.isMesh) {
+					child.scale.set(5,5,5); // Redimensiona o modelo
+					
+					locar.add(
+						child,
+						pos.coords.longitude + 0.0009, // pega a longitude do GPS e adiciona 0.0009
+						pos.coords.latitude + 0.0009 // pega a latitude do GPS e adiciona 0.0009
+					);
+				}
+			});
+		});
+
 		// Adicionando o objeto 3D em uma latitude e longitude específicas
-		locar.add(
-			mesh,
-			pos.coords.longitude + 0.0009, // pega a longitude do GPS e adiciona 0.0009
-			pos.coords.latitude + 0.0009 // pega a latitude do GPS e adiciona 0.0009
-		);
+		// locar.add(
+		// 	mesh,
+		// 	pos.coords.longitude + 0.0009, // pega a longitude do GPS e adiciona 0.0009
+		// 	pos.coords.latitude + 0.0009 // pega a latitude do GPS e adiciona 0.0009
+		// );
         
 		firstLocation = false; // para não criar mais de um objeto
 	}
