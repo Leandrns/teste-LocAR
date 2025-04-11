@@ -20,6 +20,13 @@ document.body.appendChild(renderer.domElement);
 // Criando uma cena
 const scene = new THREE.Scene();
 
+const ambientLight = new THREE.AmbientLight(0xffffff, 1); // luz branca e suave
+scene.add(ambientLight);
+
+const directionalLight = new THREE.DirectionalLight(0xffffff, 1);
+directionalLight.position.set(0, 10, 10); // posição da luz
+scene.add(directionalLight);
+
 // Criando um AR baseado em localização que recebe a cena e a câmera como parâmetros
 const locar = new LocAR.LocationBased(scene, camera);
 
