@@ -60,7 +60,7 @@ locar.on("gpsupdate", (pos, distMoved) => {
 
 			modelGroup.traverse((child) => {
 				if (child.isMesh) {
-					child.scale.set(5,5,5); // Redimensiona o modelo
+					child.scale.set(1,1,1); // Redimensiona o modelo
 					
 					locar.add(
 						child,
