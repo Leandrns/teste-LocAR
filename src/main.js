@@ -56,7 +56,7 @@ const clock = new THREE.Clock();
 // Adicionando um evento manipulador, que nesse ocorre quando o GPS do dispositivo é atualizado
 locar.on("gpsupdate", (pos, distMoved) => {
 	if (firstLocation) {
-		
+
 		// Até o momento, o código só carrega modelos .glb que contenham apenas meshes em sua hierarquia
 	
 		loader.load("./models/Flamingo.glb", (gltf) => {
