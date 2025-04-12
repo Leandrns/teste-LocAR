@@ -57,11 +57,21 @@ const clock = new THREE.Clock();
 locar.on("gpsupdate", (pos, distMoved) => {
 	if (firstLocation) {
 		loader.load("./models/duck.glb", (gltf) => {
-			modelGroup = gltf.scene;
+			const rawGroup = gltf.scene;
+			modelGroup = new THREE.Group(); // novo grupo vazio
 
-			modelGroup.scale.set(1, 1, 1); // Redimensiona o grupo todo
+			rawGroup.traverse((child) => {
+				if (child.isMesh) {
+					child.scale.set(0.5, 0.5, 0.5);
+					modelGroup.add(child); // adiciona o mesh ao grupo
+					locar.add(child, pos.coords.longitude + 0.0009, pos.coords.latitude);
+				}
+			});
+			// modelGroup = gltf.scene;
 
-			locar.add(modelGroup, pos.coords.longitude + 0.0009, pos.coords.latitude);
+			// modelGroup.scale.set(1, 1, 1); // Redimensiona o grupo todo
+
+			// locar.add(modelGroup, pos.coords.longitude + 0.0009, pos.coords.latitude);
 
 			mixer = new AnimationMixer(modelGroup);
 			gltf.animations.forEach((clip) => {
