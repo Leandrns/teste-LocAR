@@ -57,18 +57,22 @@ const clock = new THREE.Clock();
 locar.on("gpsupdate", (pos, distMoved) => {
 	if (firstLocation) {
 		loader.load("./models/Flamingo.glb", (gltf) => {
-			// Adiciona o modelo no wrapper
+			// Guarda o modelo carregado
 			modelGroup = gltf.scene;
+
+			// Redimensiona o modelo
 			modelGroup.scale.set(0.5, 0.5, 0.5);
 
-			// Adiciona o wrapper com posição GPS
+			// Adiciona o modelo na cena com posição GPS
 			locar.add(modelGroup, pos.coords.longitude + 0.0009, pos.coords.latitude);
 
 			// Se houver animações, inicializa o mixer
 			if (gltf.animations.length > 0) {
-				mixer = new THREE.AnimationMixer(modelGroup); // anima o objeto interno
+				mixer = new THREE.AnimationMixer(modelGroup); // cria um mixer de animação que recebe o modelo
+				
+				// Para cada animação do modelo, cria uma ação e a executa
 				gltf.animations.forEach((clip) => {
-					mixer.clipAction(clip).play();
+					mixer.clipAction(clip).play(); // executa a animação
 				});
 			}
 		});
@@ -83,12 +87,16 @@ renderer.setAnimationLoop(animate); // Executa a geração do objeto 3D em loop
 
 function animate() {
 	const delta = clock.getDelta(); // pega o tempo entre os frames
+
+	// Atualiza o mixer de animação se existir
 	if (mixer) {
 		mixer.update(delta); // Atualiza o mixer de animação
 	}
 
+	// Animação manual para rotacionar o modelo no eixo Y
+	// Só ocorre caso o modelo tenha sido carregado
 	if (modelGroup) {
-		modelGroup.rotation.y += delta * 0.5; // Rotaciona o modelo em torno do eixo Y
+		modelGroup.rotation.y += delta * 0.5;
 	}
 
 	cam.update(); // Atualiza o vídeo da câmera
