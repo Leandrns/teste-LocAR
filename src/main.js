@@ -108,7 +108,9 @@ function animate() {
 		mixer.update(delta); // Atualiza o mixer de animação
 	}
 
-	modelGroup.rotation.y += 0.5; // Rotaciona o modelo em torno do eixo Y
+	if (modelGroup) {
+		modelGroup.rotation.y += 0.5; // Rotaciona o modelo em torno do eixo Y
+	}
 
 	cam.update(); // Atualiza o vídeo da câmera
 	deviceOrientationControls.update(); // Atualiza a orientação da câmera com base nos movimentos do dispositivo
