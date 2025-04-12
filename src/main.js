@@ -47,6 +47,9 @@ let firstLocation = true;
 const deviceOrientationControls = new LocAR.DeviceOrientationControls(camera);
 
 const loader = new GLTFLoader();
+let mixer; 
+
+const clock = new THREE.Clock();
 
 // Adicionando um evento manipulador, que nesse ocorre quando o GPS do dispositivo é atualizado
 locar.on("gpsupdate", (pos, distMoved) => {
@@ -77,6 +80,13 @@ locar.on("gpsupdate", (pos, distMoved) => {
 					);
 				}
 			});
+
+			if (gltf.animations && gltf.animations.length > 0) {
+				mixer = new AnimationMixer(modelGroup);
+				gltf.animations.forEach((clip) => {
+					mixer.clipAction(clip).play();
+				});
+			}
 		});
 
 		// Adicionando o objeto 3D em uma latitude e longitude específicas
@@ -95,6 +105,11 @@ locar.startGps(); // Inicia o GPS
 renderer.setAnimationLoop(animate); // Executa a geração do objeto 3D em loop
 
 function animate() {
+	const delta = clock.getDelta(); // pega o tempo entre os frames
+	if (mixer) {
+		mixer.update(delta); // Atualiza o mixer de animação
+	}
+	
 	cam.update(); // Atualiza o vídeo da câmera
 	deviceOrientationControls.update(); // Atualiza a orientação da câmera com base nos movimentos do dispositivo
 	renderer.render(scene, camera); // Renderiza a cena e a câmera atualizados
