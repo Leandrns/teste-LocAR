@@ -66,7 +66,7 @@ locar.on("gpsupdate", (pos, distMoved) => {
 		);
 
 
-		loader.load("./models/AnimatedFlamingo.glb", (gltf) => {
+		loader.load("./models/Flamingo.glb", (gltf) => {
 			const modelGroup = gltf.scene;
 
 			modelGroup.traverse((child) => {
@@ -80,13 +80,10 @@ locar.on("gpsupdate", (pos, distMoved) => {
 					);
 				}
 			});
-
-			if (gltf.animations && gltf.animations.length > 0) {
-				mixer = new AnimationMixer(modelGroup);
-				gltf.animations.forEach((clip) => {
-					mixer.clipAction(clip).play();
-				});
-			}
+			mixer = new AnimationMixer(modelGroup);
+			gltf.animations.forEach((clip) => {
+				mixer.clipAction(clip).play();
+			});
 		});
 
 		// Adicionando o objeto 3D em uma latitude e longitude específicas
