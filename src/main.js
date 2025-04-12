@@ -56,25 +56,21 @@ const clock = new THREE.Clock();
 // Adicionando um evento manipulador, que nesse ocorre quando o GPS do dispositivo é atualizado
 locar.on("gpsupdate", (pos, distMoved) => {
 	if (firstLocation) {
-		loader.load("./models/Horse.glb", (gltf) => {
-			// Cria um grupo wrapper
-			const wrapper = new THREE.Group();
-
+		loader.load("./models/Flamingo.glb", (gltf) => {
 			// Adiciona o modelo no wrapper
 			modelGroup = gltf.scene;
 			modelGroup.scale.set(0.5, 0.5, 0.5);
-			wrapper.add(modelGroup);
 
 			// Adiciona o wrapper com posição GPS
 			locar.add(modelGroup, pos.coords.longitude + 0.0009, pos.coords.latitude);
 
 			// Se houver animações, inicializa o mixer
-			// if (gltf.animations.length > 0) {
+			if (gltf.animations.length > 0) {
 				mixer = new THREE.AnimationMixer(modelGroup); // anima o objeto interno
 				gltf.animations.forEach((clip) => {
 					mixer.clipAction(clip).play();
 				});
-			// }
+			}
 		});
 
 		firstLocation = false; // para não criar mais de um objeto
