@@ -66,7 +66,7 @@ locar.on("gpsupdate", (pos, distMoved) => {
 		);
 
 
-		loader.load("./models/Flamingo.glb", (gltf) => {
+		loader.load("./models/Horse.glb", (gltf) => {
 			const modelGroup = gltf.scene;
 
 			modelGroup.traverse((child) => {
