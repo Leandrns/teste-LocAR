@@ -66,7 +66,7 @@ locar.on("gpsupdate", (pos, distMoved) => {
 			wrapper.add(modelGroup);
 
 			// Adiciona o wrapper com posição GPS
-			locar.add(wrapper, pos.coords.longitude + 0.0009, pos.coords.latitude);
+			locar.add(modelGroup, pos.coords.longitude + 0.0009, pos.coords.latitude);
 
 			// Se houver animações, inicializa o mixer
 			if (gltf.animations.length > 0) {
