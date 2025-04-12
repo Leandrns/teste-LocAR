@@ -66,7 +66,7 @@ locar.on("gpsupdate", (pos, distMoved) => {
 		);
 
 
-		loader.load("./models/Flamingo.glb", (gltf) => {
+		loader.load("./models/AnimatedFlamingo.glb", (gltf) => {
 			const modelGroup = gltf.scene;
 
 			modelGroup.traverse((child) => {
@@ -109,7 +109,7 @@ function animate() {
 	if (mixer) {
 		mixer.update(delta); // Atualiza o mixer de animação
 	}
-	
+
 	cam.update(); // Atualiza o vídeo da câmera
 	deviceOrientationControls.update(); // Atualiza a orientação da câmera com base nos movimentos do dispositivo
 	renderer.render(scene, camera); // Renderiza a cena e a câmera atualizados
