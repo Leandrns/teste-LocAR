@@ -48,6 +48,7 @@ const deviceOrientationControls = new LocAR.DeviceOrientationControls(camera);
 
 const loader = new GLTFLoader();
 let mixer; 
+let modelGroup;
 
 const clock = new THREE.Clock();
 
@@ -67,7 +68,7 @@ locar.on("gpsupdate", (pos, distMoved) => {
 
 
 		loader.load("./models/Horse.glb", (gltf) => {
-			const modelGroup = gltf.scene;
+			modelGroup = gltf.scene;
 
 			modelGroup.traverse((child) => {
 				if (child.isMesh) {
@@ -106,6 +107,8 @@ function animate() {
 	if (mixer) {
 		mixer.update(delta); // Atualiza o mixer de animação
 	}
+
+	modelGroup.rotation.y += 0.5; // Rotaciona o modelo em torno do eixo Y
 
 	cam.update(); // Atualiza o vídeo da câmera
 	deviceOrientationControls.update(); // Atualiza a orientação da câmera com base nos movimentos do dispositivo
