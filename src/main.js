@@ -56,7 +56,7 @@ const clock = new THREE.Clock();
 // Adicionando um evento manipulador, que nesse ocorre quando o GPS do dispositivo é atualizado
 locar.on("gpsupdate", (pos, distMoved) => {
 	if (firstLocation) {
-		loader.load("./models/duck.glb", (gltf) => {
+		loader.load("./models/Horse.glb", (gltf) => {
 			// Cria um grupo wrapper
 			const wrapper = new THREE.Group();
 
