@@ -57,26 +57,24 @@ const clock = new THREE.Clock();
 locar.on("gpsupdate", (pos, distMoved) => {
 	if (firstLocation) {
 		loader.load("./models/duck.glb", (gltf) => {
-			const rawGroup = gltf.scene;
-			modelGroup = new THREE.Group(); // novo grupo vazio
+			// Cria um grupo wrapper
+			const wrapper = new THREE.Group();
 
-			rawGroup.traverse((child) => {
-				if (child.isMesh) {
-					child.scale.set(0.5, 0.5, 0.5);
-					modelGroup.add(child); // adiciona o mesh ao grupo
-					locar.add(child, pos.coords.longitude + 0.0009, pos.coords.latitude);
-				}
-			});
-			// modelGroup = gltf.scene;
+			// Adiciona o modelo no wrapper
+			modelGroup = gltf.scene;
+			modelGroup.scale.set(0.5, 0.5, 0.5);
+			wrapper.add(modelGroup);
 
-			// modelGroup.scale.set(1, 1, 1); // Redimensiona o grupo todo
+			// Adiciona o wrapper com posição GPS
+			locar.add(wrapper, pos.coords.longitude + 0.0009, pos.coords.latitude);
 
-			// locar.add(modelGroup, pos.coords.longitude + 0.0009, pos.coords.latitude);
-
-			mixer = new AnimationMixer(modelGroup);
-			gltf.animations.forEach((clip) => {
-				mixer.clipAction(clip).play();
-			});
+			// Se houver animações, inicializa o mixer
+			if (gltf.animations.length > 0) {
+				mixer = new THREE.AnimationMixer(modelGroup); // anima o objeto interno
+				gltf.animations.forEach((clip) => {
+					mixer.clipAction(clip).play();
+				});
+			}
 		});
 
 		firstLocation = false; // para não criar mais de um objeto
