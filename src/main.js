@@ -56,10 +56,10 @@ const clock = new THREE.Clock();
 // Adicionando um evento manipulador, que nesse ocorre quando o GPS do dispositivo é atualizado
 locar.on("gpsupdate", (pos, distMoved) => {
 	if (firstLocation) {
-		loader.load("./models/Horse.glb", (gltf) => {
+		loader.load("./models/duck.glb", (gltf) => {
 			modelGroup = gltf.scene;
 
-			modelGroup.scale.set(0.2, 0.2, 0.2); // Redimensiona o grupo todo
+			modelGroup.scale.set(1, 1, 1); // Redimensiona o grupo todo
 
 			locar.add(modelGroup, pos.coords.longitude + 0.0009, pos.coords.latitude);
 
