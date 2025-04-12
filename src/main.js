@@ -32,7 +32,8 @@ scene.add(directionalLight);
 const locar = new LocAR.LocationBased(scene, camera);
 
 // Ajuste e redimensionamento da câmera de acordo com a janela do navegador
-window.addEventListener("resize", (e) => {	// pega o evento de resize
+window.addEventListener("resize", (e) => {
+	// pega o evento de resize
 	renderer.setSize(window.innerWidth, window.innerHeight); // atualiza o tamanho do renderizador
 	camera.aspect = window.innerWidth / window.innerHeight; // atualiza a proporção da câmera
 	camera.updateProjectionMatrix(); // atualiza a matriz de projeção da câmera
@@ -47,7 +48,7 @@ let firstLocation = true;
 const deviceOrientationControls = new LocAR.DeviceOrientationControls(camera);
 
 const loader = new GLTFLoader();
-let mixer; 
+let mixer;
 let modelGroup;
 
 const clock = new THREE.Clock();
@@ -55,45 +56,30 @@ const clock = new THREE.Clock();
 // Adicionando um evento manipulador, que nesse ocorre quando o GPS do dispositivo é atualizado
 locar.on("gpsupdate", (pos, distMoved) => {
 	if (firstLocation) {
-		// Criando um objeto Three.js que gera uma geometria de cubo
-		const geom = new THREE.BoxGeometry(20, 20, 20);
-
-		// Criando uma malha 3D passando a geometria e o material do objeto como parâmetros
-		const mesh = new THREE.Mesh(
-			geom,
-			new THREE.MeshPhongMaterial({ color: "black", emissive: "purple", shininess: 100 })
-			// O material é um MeshPhongMaterial, que é um material que reflete a luz
-			// Mais detalhes sobre os materiais podem ser vistos em https://threejs.org/manual/#en/materials
-		);
-
-
 		loader.load("./models/Horse.glb", (gltf) => {
 			modelGroup = gltf.scene;
 
-			modelGroup.traverse((child) => {
-				if (child.isMesh) {
-					child.scale.set(0.5,0.5,0.5); // Redimensiona o modelo
-					
-					locar.add(
-						child,
-						pos.coords.longitude + 0.0009, // pega a longitude do GPS e adiciona 0.0009
-						pos.coords.latitude // pega a latitude do GPS e adiciona 0.0009
-					);
-				}
-			});
+			modelGroup.scale.set(0.5, 0.5, 0.5); // Redimensiona o grupo todo
+
+			locar.add(modelGroup, pos.coords.longitude + 0.0009, pos.coords.latitude);
+			
+			// modelGroup.traverse((child) => {
+			// 	if (child.isMesh) {
+			// 		child.scale.set(0.5,0.5,0.5); // Redimensiona o modelo
+
+			// 		locar.add(
+			// 			child,
+			// 			pos.coords.longitude + 0.0009, // pega a longitude do GPS e adiciona 0.0009
+			// 			pos.coords.latitude // pega a latitude do GPS e adiciona 0.0009
+			// 		);
+			// 	}
+			// });
 			mixer = new AnimationMixer(modelGroup);
 			gltf.animations.forEach((clip) => {
 				mixer.clipAction(clip).play();
 			});
 		});
 
-		// Adicionando o objeto 3D em uma latitude e longitude específicas
-		// locar.add(
-		// 	mesh,
-		// 	pos.coords.longitude + 0.0009, // pega a longitude do GPS e adiciona 0.0009
-		// 	pos.coords.latitude + 0.0009 // pega a latitude do GPS e adiciona 0.0009
-		// );
-        
 		firstLocation = false; // para não criar mais de um objeto
 	}
 });
