@@ -109,7 +109,7 @@ function animate() {
 	}
 
 	if (modelGroup) {
-		modelGroup.rotation.y += 0.5; // Rotaciona o modelo em torno do eixo Y
+		modelGroup.rotation.y += delta * 0.5; // Rotaciona o modelo em torno do eixo Y
 	}
 
 	cam.update(); // Atualiza o vídeo da câmera
