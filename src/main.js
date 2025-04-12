@@ -69,12 +69,12 @@ locar.on("gpsupdate", (pos, distMoved) => {
 			locar.add(modelGroup, pos.coords.longitude + 0.0009, pos.coords.latitude);
 
 			// Se houver animações, inicializa o mixer
-			if (gltf.animations.length > 0) {
+			// if (gltf.animations.length > 0) {
 				mixer = new THREE.AnimationMixer(modelGroup); // anima o objeto interno
 				gltf.animations.forEach((clip) => {
 					mixer.clipAction(clip).play();
 				});
-			}
+			// }
 		});
 
 		firstLocation = false; // para não criar mais de um objeto
