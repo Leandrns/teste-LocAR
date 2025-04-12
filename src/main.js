@@ -59,21 +59,10 @@ locar.on("gpsupdate", (pos, distMoved) => {
 		loader.load("./models/Horse.glb", (gltf) => {
 			modelGroup = gltf.scene;
 
-			modelGroup.scale.set(0.5, 0.5, 0.5); // Redimensiona o grupo todo
+			modelGroup.scale.set(0.2, 0.2, 0.2); // Redimensiona o grupo todo
 
 			locar.add(modelGroup, pos.coords.longitude + 0.0009, pos.coords.latitude);
-			
-			// modelGroup.traverse((child) => {
-			// 	if (child.isMesh) {
-			// 		child.scale.set(0.5,0.5,0.5); // Redimensiona o modelo
 
-			// 		locar.add(
-			// 			child,
-			// 			pos.coords.longitude + 0.0009, // pega a longitude do GPS e adiciona 0.0009
-			// 			pos.coords.latitude // pega a latitude do GPS e adiciona 0.0009
-			// 		);
-			// 	}
-			// });
 			mixer = new AnimationMixer(modelGroup);
 			gltf.animations.forEach((clip) => {
 				mixer.clipAction(clip).play();
